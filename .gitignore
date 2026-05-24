@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node/Dashboard
+node_modules/
+.next/
+out/
+.nuxt/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Cache
+.cache/
+.pytest_cache/
+
+# Data files (keep directories but ignore large files)
+*.parquet
+*.csv
+*.json
+*.pkl
+*.pickle
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Docker
+.docker/
+
+# Misc
+*.tmp
+*.bak
+.DS_Store

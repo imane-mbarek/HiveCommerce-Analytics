@@ -1,0 +1,26 @@
+# Hive metastore
+metastore_db/
+warehouse/
+
+# Query results
+results/
+*.result
+
+# Logs
+logs/
+*.log
+hive.log
+
+# Compiled queries
+*.compiled
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+
+# Temp files
+*.tmp
+*.swp

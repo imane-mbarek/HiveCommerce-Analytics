@@ -1,0 +1,19 @@
+# Docker build artifacts
+.dockerignore
+docker-compose.override.yml
+
+# Environment files
+.env
+.env.local
+
+# Volumes
+volumes/
+data/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

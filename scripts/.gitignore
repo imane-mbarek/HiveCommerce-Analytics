@@ -1,0 +1,24 @@
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Results
+results/
+output/
+*.pid
+
+# Cache
+.cache/

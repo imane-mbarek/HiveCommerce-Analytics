@@ -1,0 +1,31 @@
+# Large data files
+*.parquet
+*.csv
+*.csv.gz
+*.json
+*.jsonl
+*.xml
+*.db
+*.sqlite
+
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tar.gz
+
+# HDFS
+hdfs/*
+!hdfs/.gitkeep
+
+# Raw data (usually large)
+raw/*
+!raw/.gitkeep
+
+# Cleaned data (usually large)
+cleaned/*
+!cleaned/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,27 @@
+# Node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Next.js / React build
+.next/
+out/
+build/
+dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Environment
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Cache
+.eslintcache
+.stylelintcache
