@@ -1,26 +1,3 @@
-# Hive metastore
-metastore_db/
-warehouse/
+# Keep this directory in Git.
+# Add Hive scripts here when needed.
 
-# Query results
-results/
-*.result
-
-# Logs
-logs/
-*.log
-hive.log
-
-# Compiled queries
-*.compiled
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Cache
-.cache/
-
-# Temp files
-*.tmp
-*.swp

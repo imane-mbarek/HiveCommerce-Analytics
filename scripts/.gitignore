@@ -1,24 +1,3 @@
-# Logs
-logs/
-*.log
+# Keep this directory in Git.
+# Add utility scripts here when needed.
 
-# Temporary files
-*.tmp
-*.bak
-*.swp
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Environment
-.env
-.env.local
-
-# Results
-results/
-output/
-*.pid
-
-# Cache
-.cache/
