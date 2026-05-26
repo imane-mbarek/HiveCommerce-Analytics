@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    hostname: namenode
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    environment:
+      - CLUSTER_NAME=hive-cluster
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - HDFS_CONF_dfs_blocksize=2097152    # 2 MB → visible dans l'interface web
+      - HDFS_CONF_dfs_replication=3        # 1 copie par DataNode
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    hostname: datanode1
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    hostname: datanode2
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    hostname: datanode3
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+
+  hive-server:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-server
+    depends_on:
+      - namenode
+      - datanode1
+      - datanode2
+      - datanode3
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - SERVICE_PRECONDITION=namenode:9870 datanode1:9864 datanode2:9864 datanode3:9864
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionURL=jdbc:derby:;databaseName=/opt/hive/data/metastore_db;create=true
+
+volumes:
+  namenode_data:
+  datanode_data:
