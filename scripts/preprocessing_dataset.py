@@ -3,11 +3,12 @@ import os
 # =================== ÉTAPE 1 : Charger les 2 fichiers CSV ===================
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_DIR = os.path.join(BASE_DIR, "data")
+RAW_DIR = os.path.join(BASE_DIR, "data", "raw")
+CLEANED_DIR = os.path.join(BASE_DIR, "data", "cleaned")
 
-orders  = pd.read_csv(os.path.join(DATA_DIR, "olist_orders_dataset.csv"))
-items   = pd.read_csv(os.path.join(DATA_DIR, "olist_order_items_dataset.csv"))
-reviews = pd.read_csv(os.path.join(DATA_DIR, "olist_order_reviews_dataset.csv"))
+orders  = pd.read_csv(os.path.join(RAW_DIR, "olist_orders_dataset.csv"))
+items   = pd.read_csv(os.path.join(RAW_DIR, "olist_order_items_dataset.csv"))
+reviews = pd.read_csv(os.path.join(RAW_DIR, "olist_order_reviews_dataset.csv"))
 
 print(f"Orders : {len(orders)} lignes")
 print(f"Items  : {len(items)} lignes")
@@ -71,6 +72,6 @@ print(df.dtypes)
 print(df.describe())
 print(f"\n Lignes finales : {len(df)}")
 
-output_path = os.path.join(DATA_DIR, "commandes_ecommerce.csv")
+output_path = os.path.join(CLEANED_DIR, "commandes_ecommerce.csv")
 df.to_csv(output_path, index=False)
 print(f"✓ Fichier sauvegardé : {output_path}")

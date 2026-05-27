@@ -25,7 +25,7 @@ run('docker exec hive-server bash -c "rm -rf /opt/hive/data/metastore_db && sche
 time.sleep(10)
 
 print("=== 3. Upload CSV vers HDFS ===")
-run("docker cp data\\commandes_ecommerce.csv namenode:/tmp/commandes_ecommerce.csv")
+run("docker cp data\\cleaned\\commandes_ecommerce.csv namenode:/tmp/commandes_ecommerce.csv")
 run('docker exec namenode bash -c "hdfs dfs -mkdir -p /user/hive/data/commandes && hdfs dfs -put -f /tmp/commandes_ecommerce.csv /user/hive/data/commandes/"')
 
 print("=== 4. Création table Hive ===")
