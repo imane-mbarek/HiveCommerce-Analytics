@@ -1,1 +1,6 @@
 
+pandas
+pyhive
+thrift
+thrift-sasl
+sasl
