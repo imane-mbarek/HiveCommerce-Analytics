@@ -1,4 +1,4 @@
-# Rapport d'Analyse Hive - Personne 6
+# Rapport d'Analyse Hive 
 
 Ce rapport documente les requêtes analytiques exécutées dans Hive pour extraire des informations commerciales à partir du jeu de données e-commerce Olist.
 
@@ -46,8 +46,14 @@ L'activité a progressé de manière significative en un an :
 | aca2eb7d00ea1a7b8ebd4e68314663af | 636 |
 | 368c6c730842d78016ad823897a372db | 547 |
 
-## 5. Résumé des Requêtes SQL utilisées
-1.  **Agrégations** : `SUM(montant_total)`, `COUNT(*)`
-2.  **Traitement des dates** : `substr(date_commande, 1, 7)` pour le groupement mensuel.
-3.  **Filtrage** : `WHERE annee IN ('2017', '2018')`
-4.  **Tri** : `ORDER BY total_vendu DESC`
+## 6. Procédure d'Exécution Automatisée
+
+Toutes les analyses présentées dans ce rapport sont centralisées dans le fichier `hive/queries/analytical_queries.hql`. Ce script permet de régénérer l'intégralité des indicateurs (KPIs) de manière reproductible.
+
+**Commande d'exécution (PowerShell) :**
+```powershell
+Get-Content hive/queries/analytical_queries.hql | docker exec -i hive-server beeline -u jdbc:hive2://localhost:10000
+```
+
+**Pourquoi cette méthode ?**
+Cette approche par redirection de flux (pipe) permet d'injecter directement le code SQL dans le moteur Hive depuis l'hôte Windows. Elle garantit que les résultats présentés dans ce rapport sont reproductibles en une seule étape technique, facilitant ainsi l'audit et la validation des analyses par des tiers.

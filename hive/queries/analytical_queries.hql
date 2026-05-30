@@ -1,6 +1,6 @@
 -- hive/queries/analytical_queries.hql
 
--- USE ecommerce_db;
+USE ecommerce_db;
 
 -- 1. Chiffre d'Affaires par Mois
 -- Objectif : Analyser la tendance temporelle de l'activité
