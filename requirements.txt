@@ -1,0 +1,23 @@
+# Dépendances Binôme 2 — Projet Big Data Hive
+# Installation : pip install -r requirements.txt
+
+# Connexion Hive
+PyHive==0.7.0
+thrift==0.16.0
+thrift-sasl==0.4.3
+pure-sasl==0.6.2
+
+# Data manipulation
+pandas==2.3.3
+numpy==2.4.2
+
+# Visualisation
+matplotlib==3.10.8
+seaborn==0.13.2
+
+# Formats Big Data
+pyarrow==23.0.1
+
+# Utilitaires
+requests==2.32.5
+python-dotenv==1.2.2
