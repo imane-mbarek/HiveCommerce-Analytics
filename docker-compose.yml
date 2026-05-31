@@ -1,0 +1,170 @@
+# ============================================================
+#  docker-compose.yml
+#  Projet Big Data — Écosystème Apache Hive
+#  Binôme 2 — Personne 3 (Infrastructure)
+#  Stack : NameNode · DataNode(x3) · PostgreSQL ·
+#          Hive Metastore · HiveServer2
+# ============================================================
+
+services:
+
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: namenode
+    hostname: namenode
+    restart: unless-stopped
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    environment:
+      - CLUSTER_NAME=hive-cluster
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - HDFS_CONF_dfs_blocksize=134217728
+      - HDFS_CONF_dfs_replication=1
+      - HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check=false
+    volumes:
+      - namenode_data:/hadoop/dfs/name
+    networks:
+      - hive_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9870"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode1
+    hostname: datanode1
+    restart: unless-stopped
+    depends_on:
+      namenode:
+        condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - SERVICE_PRECONDITION=namenode:9870
+    volumes:
+      - datanode1_data:/hadoop/dfs/data
+    networks:
+      - hive_network
+
+  datanode2:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode2
+    hostname: datanode2
+    restart: unless-stopped
+    depends_on:
+      namenode:
+        condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - SERVICE_PRECONDITION=namenode:9870
+    volumes:
+      - datanode2_data:/hadoop/dfs/data
+    networks:
+      - hive_network
+
+  datanode3:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: datanode3
+    hostname: datanode3
+    restart: unless-stopped
+    depends_on:
+      namenode:
+        condition: service_healthy
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
+      - SERVICE_PRECONDITION=namenode:9870
+    volumes:
+      - datanode3_data:/hadoop/dfs/data
+    networks:
+      - hive_network
+
+  postgres:
+    image: postgres:14-alpine
+    container_name: hive-postgres
+    hostname: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: metastore_db
+      POSTGRES_USER: hive
+      POSTGRES_PASSWORD: hive123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - hive_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hive -d metastore_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  hive-metastore:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-metastore
+    hostname: hive-metastore
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      namenode:
+        condition: service_healthy
+    env_file:
+      - hadoop.env
+    environment:
+      - SERVICE_PRECONDITION=namenode:9870 postgres:5432
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://postgres/metastore_db
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionDriverName=org.postgresql.Driver
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionUserName=hive
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionPassword=hive123
+      - HIVE_SITE_CONF_datanucleus_autoCreateSchema=true
+      - HIVE_SITE_CONF_datanucleus_fixedDatastore=false
+      - HIVE_SITE_CONF_datanucleus_autoCreateTables=true
+      - HIVE_SITE_CONF_hive_metastore_uris=thrift://hive-metastore:9083
+    ports:
+      - "9083:9083"
+    networks:
+      - hive_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:9083 || exit 0"]
+      interval: 30s
+      timeout: 15s
+      retries: 10
+      start_period: 60s
+
+  hive-server:
+    image: bde2020/hive:2.3.2-postgresql-metastore
+    container_name: hive-server
+    hostname: hive-server
+    restart: unless-stopped
+    depends_on:
+      hive-metastore:
+        condition: service_started
+    env_file:
+      - hadoop.env
+    environment:
+      - SERVICE_PRECONDITION=hive-metastore:9083
+      - HIVE_SITE_CONF_hive_metastore_uris=thrift://hive-metastore:9083
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://postgres/metastore_db
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionDriverName=org.postgresql.Driver
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionUserName=hive
+      - HIVE_SITE_CONF_javax_jdo_option_ConnectionPassword=hive123
+      - HIVE_SITE_CONF_hive_server2_thrift_bind_host=0.0.0.0
+    ports:
+      - "10000:10000"
+      - "10002:10002"
+    networks:
+      - hive_network
+
+volumes:
+  namenode_data:
+  datanode1_data:
+  datanode2_data:
+  datanode3_data:
+  postgres_data:
+
+networks:
+  hive_network:
+    driver: bridge
