@@ -1,4 +1,4 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -10,27 +10,22 @@ env/
 *.egg-info/
 dist/
 build/
-
 # Django
 *.sqlite3
 media/
 staticfiles/
-
 # Environment
 .env
 .env.*
-
 # Logs and cache
 logs/
 *.log
 .cache/
 .pytest_cache/
-
 # Data outputs
 *.parquet
 *.pkl
 *.pickle
-
 # IDE and OS
 .vscode/
 .idea/
@@ -38,4 +33,3 @@ logs/
 *.swo
 .DS_Store
 Thumbs.db
-
